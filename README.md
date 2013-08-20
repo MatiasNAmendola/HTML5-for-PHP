@@ -1,5 +1,5 @@
-HTML5Generator
-==============
+HTML5-for-PHP
+=============
 
 Create dynamic, well-formatted HTML5 markup with a simple an intuitive PHP API. This is a fork/rewrite of the [Gagawa](https://code.google.com/p/gagawa/) project. 
 
