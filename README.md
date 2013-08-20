@@ -40,13 +40,13 @@ Create any HTML5 container tags (such as **p**, **span**, or **div**) and you ca
 
 ```php
 $label = html('span', 'Website!');
-$link = html('a', $label, 'class:button');
+$link = html('a.button', $label);
 $link->href = 'http://example.com';
 echo $link;    
 ```
 Alternatively, use the *addChild* method for any container tag.
 ```php
-$link = html('a', '', 'class:button');
+$link = html('a.button');
 $link->href = 'http://example.com';
 $link->addChild(html('span', 'Website!'));
 echo $link;    
