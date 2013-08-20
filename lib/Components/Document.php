@@ -34,7 +34,7 @@
 			$this->body = html('body');
 			$this->title = html('title', $title);
 			
-			$this->head->addChild(html('meta', 'charset:'.$charset));
+			$this->head->addChild(html('meta', 'charset='.$charset));
 			$this->head->addChild($this->title);
 			
 			$this->addChild($this->head);

@@ -13,42 +13,9 @@
 	abstract class HTML5 
 	{
 		/**
-		 * Checks if a variable is really "empty".  Code borrowed from PHP.net at
-		 * http://us3.php.net/manual/en/function.empty.php#90767 because we were
-		 * previously using empty() to see if a variable is empty or not.  But
-		 * empty() dosen't work for attributes that have a value of "0", so we need
-		 * something more robust here.
-		 *
-		 *   an unset variable -> empty
-		 *   null -> empty
-		 *   0 -> NOT empty
-		 *   "0" -> NOT empty
-		 *   false -> empty
-		 *   true -> NOT empty
-		 *   'string value' -> NOT empty
-		 *   "	"(white space) -> empty
-		 *   array()(empty array) -> empty
-		 *
-		 * There are two optional parameters:
-		 *
-		 *   allow_false: setting this to true will make the function consider a
-		 *   boolean value of false as NOT empty. This parameter is false by default.
-		 *
-		 *   allow_ws: setting this to true will make the function consider a string
-		 *   with nothing but white space as NOT empty. This parameter is false by
-		 *   default.
-		 */
-		protected function isEmpty($var, $allow_false = false, $allow_ws = false) 
-		{
-			return (!isset($var) || is_null($var) ||
-				($allow_ws == false && !is_object($var) && is_string($var) && trim($var) == '' && !is_bool($var)) ||
-				($allow_false === false && is_bool($var) && $var === false) ||
-				(is_array($var) && empty($var)));
-	 	}
-	
-		/**
 		*  This is the function for building dynamic HTML
-		*  @param The name of the tag as a string for example 'tr', 'table', etc
+		*  @param The name of the tag as a string for example 'tr', 'table', can be followed 
+		*         by CSS selector, e.g. 'a#backButton' or 'a.button'
 		*  @param If the tag is a NodeContainer, this can be an array of attributes, another html node
 		* 		  or some text. If the tag is a single node, this can be an array or chain of attributes
 		*  @param The attributes list for container tags (e.g., 'class:selected')
@@ -56,8 +23,29 @@
 		*/
 		public static function build($tag, $childrenOrAttributes=null, $attributes=null)
 		{
+			// Get the tag ID from the tag string
+			// for instance 'a.button rel=external', a.button is the tagId, the rest are the attributes
+			$endPos = strpos(trim($tag), ' ');
+			
+			// The tag attributes
+			$tagAttributes = array();
+			
+			// If the tag also has some attributes
+			if ($endPos !== false)
+			{
+				$tagOriginal = $tag;
+				$tag = substr($tag, 0, $endPos);
+				$tagAttributes = Attribute::shorthand(substr($tagOriginal, $endPos + 1));
+			}
+			
+			// Match the tag name without the CSS selectors
+			preg_match('/^([a-z]{1,10})(.*)/', $tag, $tagParts);
+			
+			// Valid class ane id names must begin with a -, _, or a-z letter
+			preg_match_all('/(\.|\#)\-?[\_a-zA-Z]+[\_a-zA-Z0-9\-]*/', $tagParts[2], $selectors);
+			
 			$s = false; // if the html is a single tag like <br>
-			$tag = strtolower($tag); // the name of the tag
+			$tag = strtolower($tagParts[1]); // the name of the tag
 			$a = ''; // Valid extra attributes for tags
 			switch($tag)
 			{
@@ -170,10 +158,83 @@
 					break;
 			}
 			
-			return ($s) ?
-				new Node($tag, $childrenOrAttributes, $a):
+			// Create the attributes collection, either string or array
+			$attributes = $s ? $childrenOrAttributes : $attributes;
+			
+			// If there are attributes and they are in a string format
+			// convert to an attributes array
+			if ($attributes !== null && is_string($attributes))
+			{
+				$attributes = Attribute::shorthand($attributes);
+			}
+			
+			// Combine the attributes and the tags
+			if (is_array($attributes))
+			{
+				$attributes = array_merge($tagAttributes, $attributes);
+			}
+			// Or just add any tag attributes
+			else if (count($tagAttributes))
+			{
+				$attributes = $tagAttributes;
+			}
+			
+			// Create the node or container
+			$node = ($s) ?
+				new Node($tag, $attributes, $a) :
 				new NodeContainer($tag, $childrenOrAttributes, $attributes, $a);
+			
+			// Take the selectors convert them into id or class
+			foreach($selectors[0] as $selector)
+			{
+				switch($selector[0])
+				{
+					case '#' : 
+						$node->id = substr($selector, 1); 
+						break;
+					case '.' : 
+						if ($node->class) $node->class .= ' ';
+						$node->class .= substr($selector, 1); 
+						break;
+				}
+			}
+			
+			return $node;
 		}
+		
+		/**
+		 * Checks if a variable is really "empty".  Code borrowed from PHP.net at
+		 * http://us3.php.net/manual/en/function.empty.php#90767 because we were
+		 * previously using empty() to see if a variable is empty or not.  But
+		 * empty() dosen't work for attributes that have a value of "0", so we need
+		 * something more robust here.
+		 *
+		 *   an unset variable -> empty
+		 *   null -> empty
+		 *   0 -> NOT empty
+		 *   "0" -> NOT empty
+		 *   false -> empty
+		 *   true -> NOT empty
+		 *   'string value' -> NOT empty
+		 *   "	"(white space) -> empty
+		 *   array()(empty array) -> empty
+		 *
+		 * There are two optional parameters:
+		 *
+		 *   allow_false: setting this to true will make the function consider a
+		 *   boolean value of false as NOT empty. This parameter is false by default.
+		 *
+		 *   allow_ws: setting this to true will make the function consider a string
+		 *   with nothing but white space as NOT empty. This parameter is false by
+		 *   default.
+		 */
+		protected function isEmpty($var, $allow_false = false, $allow_ws = false) 
+		{
+			return (!isset($var) || is_null($var) ||
+				($allow_ws == false && !is_object($var) && is_string($var) && trim($var) == '' && !is_bool($var)) ||
+				($allow_false === false && is_bool($var) && $var === false) ||
+				(is_array($var) && empty($var)));
+	 	}
 	}
 	
 ?>

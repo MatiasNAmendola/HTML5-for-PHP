@@ -1,20 +1,31 @@
-<?php
+<?php	
 	
 	/**
-	*  Include all required library files
+	*  To use the library, simply include this file
+	*  takes care of the autoloading of classes
+	*  and create a root-level function called html()
+	*  @author Matt Moore <matt@cloudkid.com>
+	*  @version 1.0.0
 	*/
-	include 'Elements/HTML5.php';
-	include 'Elements/Node.php';
-	include 'Elements/NodeContainer.php';
-	include 'Elements/Attribute.php';
-	include 'Elements/Text.php';
-	include 'Components/Comment.php';
-	include 'Components/Document.php';
-	include 'Components/SimpleList.php';
-	include 'Components/Table.php';
-	include 'Exceptions/HTML5Error.php';
 	
-	use HTML5\Elements\HTML5;
+	/**
+	*  Auto load the assets in this library
+	*  @param The class name to autoload
+	*/
+	spl_autoload_register(function($name)
+	{
+		// Ignore class names not in the HTML5 namespace
+		if (!preg_match('/^HTML5\\\/', $name)) return;
+		
+		// Remove the HTML5 namespace
+		$name = preg_replace('/^HTML5/', '', $name);
+		
+		// Convert the rest to directories
+		$name = str_replace("\\", '/', $name);
+		
+		// Include the class relative to here
+		include dirname(__FILE__).'/'.$name.'.php';
+	});
 	
 	/**
 	*  Convenience function for building dynamic HTML
@@ -27,7 +38,7 @@
 	*/
 	function html($tag, $childrenOrAttributes=null, $attributes=null)
 	{
-		return HTML5::build($tag, $childrenOrAttributes, $attributes);
+		return HTML5\Elements\HTML5::build($tag, $childrenOrAttributes, $attributes);
 	}
 
 ?>

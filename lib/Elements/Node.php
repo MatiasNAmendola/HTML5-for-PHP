@@ -166,6 +166,24 @@
 		}
 		
 		/**
+		*  Add this child to a node container at the end
+		*  @param The node container to add to
+		*/
+		public function appendTo(NodeContainer $container)
+		{
+			$container->addChild($this);
+		}
+		
+		/**
+		*  Add this child to the beginning of a node container
+		*  @param The node container to prepend to to
+		*/
+		public function prependTo(NodeContainer $container)
+		{
+			$container->addChildAt($this, 0);
+		}
+		
+		/**
 		*  Get the data value
 		*  @param The name of the data attribute
 		*  @return The value of the data

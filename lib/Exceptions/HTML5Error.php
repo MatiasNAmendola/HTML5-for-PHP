@@ -50,7 +50,7 @@
 			self::EMPTY_NODE_TAG => 'Node tag is empty',
 			self::EMPTY_PARENT => 'The parent cannot be empty',
 			self::OUT_OF_BOUNDS => 'The index is out of bounds',
-			self::EMPTY_CHILD => 'Cannot append an empty child node',
+			self::EMPTY_CHILD => 'Cannot addChild an empty child node',
 			self::INVALID_NODE => 'Child node must be a valid tag'
 		);
 		

@@ -9,7 +9,7 @@ Examples
 To create an HTML node, simply call the html function, passing in the tag name and then any attributes. This example would work for any closed tag such as **img** or **br**.
 
 ```php
-echo html('img', 'src:home.jpg;id:home');
+echo html('img#home src=home.jpg');
 ```
 
 Outputs:

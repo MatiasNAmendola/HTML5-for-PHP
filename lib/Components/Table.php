@@ -51,16 +51,16 @@
 					$td = html('td', 
 						html(
 							'input', 
-							'type:checkbox;name:'.$checkbox.'[];value:'.$d[$checkbox]
+							'type=checkbox name='.$checkbox.'[] value='.$d[$checkbox]
 						),
-						'class:'.$checkbox
+						'class='.$checkbox
 					);
 					$row->addChild($td);
 				}
 				foreach($d as $name=>$value)
 				{
 					if ($name == $checkbox) continue;
-					$td = html('td', $value, 'class:'.$name);
+					$td = html('td', $value, 'class='.$name);
 					$row->addChild($td);
 				}
 				$body->addChild($row);

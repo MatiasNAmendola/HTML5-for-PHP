@@ -82,21 +82,20 @@
 		static public function shorthand($str)
 		{
 			$res = array();
-			$arr = preg_split('/\;/',$str);
-			foreach($arr as $val)
+			
+			// Match the name=value in the attributes string
+			preg_match_all('/([a-z]+[a-z\-]*)\=("[^\"]*"|\'[^\']*\'|[^\s\"\']*)/',$str, $arr);
+			
+			foreach($arr[1] as $i=>$name)
 			{
-				if ( $val )
+				$value = $arr[2][$i];
+				
+				// Remove containing quotes if present
+				if (preg_match('/^[\'\"][^\n]*[\'\"]$/', $value))
 				{
-					$key = preg_split('/\:/',$val);
-					if ( count ( $key ) > 1 ) 
-					{
-						$res[$key[0]] = $key[1];
-					}
-					else
-					{
-						$res[] = $val;
-					}
+					$value = substr($value, 1, -1);
 				}
+				$res[$name] = $value;
 			}
 			return $res;
 		}

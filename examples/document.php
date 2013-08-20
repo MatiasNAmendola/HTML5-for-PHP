@@ -10,8 +10,9 @@
 	$doc = new Document('Test Document');
 	
 	// Add a link to the page
-	$link = html('a', 'Link');
+	$link = html('a#google.external rel=external', 'Link', 'class="test something" target=blank rel=test');
 	$link->href = 'http://google.com';
+	$link->appendTo($doc->body);
 	
 	// Create an unordered list for an array of items
 	// the array can be other html elements or text
@@ -22,6 +23,7 @@
 			'third'
 		)
 	);
+	$list->appendTo($doc->body);
 	
 	// Create a sample table with some rows of dummy data
 	$table = new Table(
@@ -37,9 +39,9 @@
 	$table->style = 'border:1px solid black';
 	$table->border = 0;
 	$table->id = 'people';
+	$table->appendTo($doc->body);
 	
-	// Add the items to the body
-	$doc->body->addChild($link . $list . $table);
+	echo html('img#home src=home.jpg');
 	
 	// Output the result
 	echo $doc;
