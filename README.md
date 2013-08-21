@@ -121,7 +121,7 @@ echo html('span#example.small.label'); //<span id="example" class="small label">
 html($tag, $attributes=null);
 ```
 +	`$tag` **string** The name of the valid HTML5 element which can contain CSS selectors or short-hand attribute string.
-+   `$attributes` **array|string **(optional) Collection of element attributes
++   `$attributes` **array|string** (optional) Collection of element attributes
 
 Returns a `HTML\Elements\Node` object.
 
