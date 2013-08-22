@@ -24,7 +24,7 @@
 		$name = str_replace("\\", '/', $name);
 		
 		// Include the class relative to here
-		include dirname(__FILE__).'/'.$name.'.php';
+		include __DIR__.'/'.$name.'.php';
 	});
 	
 	/**
