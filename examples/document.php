@@ -40,10 +40,8 @@
 	$table->border = 0;
 	$table->id = 'people';
 	$table->appendTo($doc->body);
-	
-	echo html('img#home src=home.jpg');
-	
-	// Output the result
-	echo $doc;
+		
+	// Output the result formatted nice with indents
+	echo HTML5\Elements\HTML5::format($doc);
 
 ?>

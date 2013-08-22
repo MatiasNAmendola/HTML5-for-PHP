@@ -1,8 +1,9 @@
 <?php
 
-	namespace HTML5\Elements;
-	
+namespace HTML5\Elements
+{	
 	use HTML5\Exceptions\HTML5Error;
+	use \SimpleXMLElement;
 	
 	/**
 	*  The HTML5 Builder is used for building HTML5 markup dynamically
@@ -11,11 +12,11 @@
 	*  @version 1.0.0
 	*/
 	abstract class HTML5 
-	{
+	{		
 		/**
 		*  This is the function for building dynamic HTML
 		*  @param The name of the tag as a string for example 'tr', 'table', can be followed 
-		*         by CSS selector, e.g. 'a#backButton' or 'a.button'
+		*		 by CSS selector, e.g. 'a#backButton' or 'a.button'
 		*  @param If the tag is a NodeContainer, this can be an array of attributes, another html node
 		* 		  or some text. If the tag is a single node, this can be an array or chain of attributes
 		*  @param The attributes list for container tags (e.g., 'class:selected')
@@ -39,7 +40,7 @@
 			}
 			
 			// Match the tag name without the CSS selectors
-			preg_match('/^([a-z]{1,10})(.*)/', $tag, $tagParts);
+			preg_match('/^([a-z1-6]{1,10})(.*)/', $tag, $tagParts);
 			
 			// Valid class ane id names must begin with a -, _, or a-z letter
 			preg_match_all('/(\.|\#)\-?[\_a-zA-Z]+[\_a-zA-Z0-9\-]*/', $tagParts[2], $selectors);
@@ -202,6 +203,26 @@
 			return $node;
 		}
 		
+		/** 
+		* Prettifies an HTML string into a human-readable and indented work of art 
+		* @param string $html The XML-compatible HTML as a string 
+		* @return string The formatted string
+		*/
+		public static function format($html)
+		{
+			// Conver the HTML -> SimpleXML -> DOMDocument
+			$dom = dom_import_simplexml(new SimpleXMLElement($html))->ownerDocument;
+			
+			// Format the DOMDocument 
+			$dom->formatOutput = true;
+			
+			// Save the output as XML
+			$buffer = $dom->saveXML();
+			
+			// Remove the first line which has the XML declaration
+			return substr($buffer, strpos($buffer, "\n")+1); 
+		}
+		
 		/**
 		 * Checks if a variable is really "empty".  Code borrowed from PHP.net at
 		 * http://us3.php.net/manual/en/function.empty.php#90767 because we were
@@ -236,5 +257,6 @@
 				(is_array($var) && empty($var)));
 	 	}
 	}
+}
 	
 ?>

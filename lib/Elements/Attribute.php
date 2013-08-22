@@ -1,7 +1,7 @@
 <?php
 	
-	namespace HTML5\Elements;
-		
+namespace HTML5\Elements
+{		
 	/**
 	*  An HTML attribute used on the node
 	*  @author Matt Moore <matt@cloudkid.com>
@@ -135,5 +135,6 @@
 				|| method_exists($this , 'set' . ucfirst($name));
 		}
 	}
+}
 
 ?>

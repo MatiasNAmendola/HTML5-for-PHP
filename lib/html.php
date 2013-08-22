@@ -18,7 +18,7 @@
 		if (!preg_match('/^HTML5\\\/', $name)) return;
 		
 		// Remove the HTML5 namespace
-		$name = preg_replace('/^HTML5/', '', $name);
+		$name = preg_replace('/^HTML5\\\/', '', $name);
 		
 		// Convert the rest to directories
 		$name = str_replace("\\", '/', $name);

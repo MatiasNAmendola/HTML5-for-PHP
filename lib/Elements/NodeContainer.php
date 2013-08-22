@@ -1,7 +1,7 @@
 <?php
 
-	namespace HTML5\Elements;
-	
+namespace HTML5\Elements
+{	
 	use HTML5\Exceptions\HTML5Error;
 	
 	/**
@@ -175,11 +175,19 @@
 		{
 			return $this->_children[$index];
 		}
+		
+		/**
+		*  Close the writing
+		*/
+		protected function writeClose() 
+		{
+			return "</" . $this->_tag . ">";
+		}
 
 		/* @Override */
 		public function __toString() 
 		{
-			$buffer = $this->writeOpen();		
+			$buffer = $this->writeOpen(false);		
 			foreach($this->_children as $child)
 			{
 				$buffer .= $child->__toString();		
@@ -189,5 +197,6 @@
 			return $buffer;
 		}
 	}
+}
 
 ?>

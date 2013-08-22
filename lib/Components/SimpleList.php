@@ -1,7 +1,7 @@
 <?php
 	
-	namespace HTML5\Components;
-	
+namespace HTML5\Components
+{	
 	use HTML5\Elements\NodeContainer;
 	
 	/**
@@ -29,5 +29,6 @@
 			}
 		}
 	}
+}
 
 ?>

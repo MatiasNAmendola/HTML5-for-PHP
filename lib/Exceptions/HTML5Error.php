@@ -1,7 +1,7 @@
 <?php
 
-	namespace HTML5\Exceptions;
-	
+namespace HTML5\Exceptions
+{	
 	/**
 	*  Errors with using the HTML5 interface
 	*  @author Matt Moore <matt@cloudkid.com>
@@ -69,5 +69,6 @@
 			parent::__construct($message, $code);
 		}
 	}
+}
 
 ?>

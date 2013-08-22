@@ -1,7 +1,7 @@
 <?php
-	
-	namespace HTML5\Elements;
-	
+
+namespace HTML5\Elements
+{	
 	/**
 	*  Special node representing plain text
 	*  @author Matt Moore <matt@cloudkid.com>
@@ -18,5 +18,6 @@
 			return $this->_tag;
 		}
 	}
+}
 
 ?>

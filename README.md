@@ -29,7 +29,7 @@ echo html('img', array('src'=>'home.jpg'));
 All of these examples would output:
 
 ```html
-<img src="home.jpg">
+<img src="home.jpg" />
 ```
 
 ###Adding Attributes

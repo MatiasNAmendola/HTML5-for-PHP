@@ -1,7 +1,7 @@
 <?php
 	
-	namespace HTML5\Elements;
-	
+namespace HTML5\Elements
+{	
 	/**
 	*  A generic html tag w/o children
 	*  @author Matt Moore <matt@cloudkid.com>
@@ -204,24 +204,16 @@
 		/**
 		*  Start the writing
 		*/
-		protected function writeOpen() 
+		protected function writeOpen($selfClose=true) 
 		{
-			$buffer = "<";
+			$buffer = '<';
 			$buffer .= $this->_tag;
 			foreach($this->_attributes as $attribute) 
 			{
 				$buffer .= (string)$attribute; 
 			}
-			$buffer .= ">";
+			$buffer .= ($selfClose ? ' />' : '>');
 			return $buffer;
-		}
-		
-		/**
-		*  Close the writing
-		*/
-		protected function writeClose() 
-		{
-			return "</" . $this->_tag . ">";
 		}
 		
 		/**
@@ -260,5 +252,6 @@
 			return in_array($name, $this->_validAttrs) || parent::__isset($name);
 		}
 	}
+}
 
 ?>
